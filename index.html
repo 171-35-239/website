@@ -1,0 +1,164 @@
+<?php include('dbconnect.php'); 
+
+$i = $res= $rec= $fn=$ln=$gn=$em=$su=$comment=$c ="";
+	
+if(isset($_GET['edit'])){
+	$i=$_GET['edit'];
+	$res=mysqli_query($con, "SELECT * FROM lab where id= $i");
+	$rec=mysqli_fetch_array($res);
+	$fn=$rec['first_name'];
+	
+	$ln=$rec['last_name'];
+	$em=$rec['email'];
+	$gn=$rec['gender'];
+	$su=$rec['subject'];
+	$comment=$rec['comments'];
+	$c=$rec['city'];
+}
+
+if(isset($_GET['del'])){
+	$i=$_GET['del'];
+	mysqli_query($con, "DELETE FROM lab where id= $i");
+}
+
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lab Final</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+	<h2>Student Registdation Form</h2>
+
+	<form method="post" action="server.php">
+		<div class="namefield">
+			<div class="nam">
+				<h4>First Name</h4>
+			</div>
+			<div class="namin">
+				<input type="text" name="fname" value=" <?php echo $fn; ?> ">
+			</div>
+		</div>
+		<div class="namefield">
+			<div class="nam">
+				<h4>Last Name</h4>
+			</div>
+			<div class="namin">
+				<input type="text" name="lname" value=" <?php echo $ln ?> ">
+			</div>
+		</div>
+		<div class="namefield">
+			<div class="nam">
+				<h4>Email</h4>
+			</div>
+			<div class="namin">
+				<input type="email" name="mail" value=" <?php echo $em ?> ">
+			</div>
+		</div>
+		<div class="namefield">
+			<div class="nam">
+				<h4>Gender</h4>
+			</div>
+			<div class="namin">
+				<input type="radio" name="gender" value="Male" id="m" style="width: 0px">
+				<label for="m" value=" <?php echo $gn ?> ">Male</label>
+				<input type="radio" name="gender" value=" <?php echo $gn ?> " id="f" style="width: 0px">
+				<label for="f" style>Female</label>
+			</div>
+		</div>
+		<div class="namefield">
+			<div class="nam" style="margin-left: -50px;">
+				<h4>Choose Subjects</h4>
+			</div>
+			<div class="namin">
+				<input style="width: 0px" type="checkbox" name="sub[]" id="o" value=" <?php echo $su ?> ">
+				<label for="o">OOP</label>
+
+				<input  style="width: 0px"type="checkbox" name="sub[]" id="d" value=" <?php echo $su ?> ">
+				<label for="d">Database</label>
+				<input type="checkbox" style="width: 0px" name="sub[]" id="w" value=" <?php echo $su ?> ">
+				<label for="w">Web technologies</label>
+				<input type="checkbox" name="sub[]" style="width: 0px"id="a" value=" <?php echo $su ?> ">
+				<label for="a">Android Dev</label>
+			</div>
+		</div>
+		<div class="namefield">
+			<div class="nam" style="margin-left: -113px; margin-top: 55px">
+				<h4>Comments</h4>
+			</div>
+			<div class="namin">
+				<textarea name="com" placeholder="Description Comes here" rows="5" cols="35" value=" <?php echo $comment ?> "></textarea>
+			</div>
+		</div>
+		<div class="namefield">
+			<div class="nam">
+				<h4>City</h4>
+			</div>
+			<div class="namin">
+				<select name="ci">
+					<option name="l" value="Lahore">Lahore</option>
+					<option name="l" value="M">M</option>
+					<option name="l" value="F">F</option>
+				</select>
+			</div>
+		</div>
+		<div class="namefield">
+			<div class="nam">
+				
+			</div>
+			<div class="namin">
+				<button name="update">Update</button>
+				<button name="insert" style="background: red; color: white">Submit</button>
+			</div>
+		</div>
+		
+	</form>
+
+
+	<table border="1px">
+		
+		<thead>
+			<tr>
+				<td>ID</td>
+				<td>First Name</td>
+				<td>Last Name</td>
+				<td>Email</td>
+				<td>Gender</td>
+				<td>Subjects</td>
+				<td>Comments</td>
+				<td>City</td>
+				<td>Update</td>
+				<td>Delete</td>
+			</tr>
+		</thead>
+
+		<tbody>
+			<?php 
+				$result=mysqli_query($con, "SELECT * FROM lab");
+				while($rec=mysqli_fetch_array($result)) {
+			 ?>
+			 <tr>
+			<td> <?php echo $rec['id'] ?></td>
+			<td> <?php echo $rec['first_name'] ?></td>
+			<td> <?php echo $rec['last_name'] ?></td>
+			<td> <?php echo $rec['email'] ?></td>
+			<td> <?php echo $rec['gender'] ?></td>
+			<td> <?php echo $rec['subject'] ?></td>
+			<td> <?php echo $rec['comments'] ?></td>
+			<td> <?php echo $rec['city'] ?></td>
+			<td> <a href=" index.php?edit=<?php echo $rec['id']; ?> ">Edit</a></td>
+			<td> <a href=" index.php?del=<?php echo $rec['id']; ?> ">Delete</a></td>
+			</tr>
+			<?php } ?>
+
+		</tbody>
+
+	</table>
+
+
+</body>
+</html>
